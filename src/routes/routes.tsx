@@ -3,16 +3,14 @@ import App from "../App";
 import Login from "../pages/login/login";
 import Signup from "../pages/signup/Signup";
 import Allbooks from "../pages/dashboard/Allbooks/Allbooks";
+import BookLayout from "../pages/dashboard/Allbooks/BookLayout";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      {
-        path: "allbooks",
-        element: <Allbooks />,
-      },
+     
     ],
   },
   {
@@ -22,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "signup",
     element: <Signup />,
+  },
+  {
+    path: "allbooks",
+    element: <BookLayout />,
   },
 ]);
 
