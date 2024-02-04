@@ -12,27 +12,33 @@ import { useForm } from "react-hook-form";
 import { useLoginMutation } from "../../redux/features/user/userApi";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hook";
+import { verifyToken } from "../../utils/verifyToken";
+import { setUser } from "../../redux/features/user/userSlice";
 
 const Login = () => {
+  const dispatch = useAppDispatch();
   const {
     register,
     formState: { errors },
     handleSubmit,
     reset,
   } = useForm();
-  const [login, { data, error }] = useLoginMutation();
-  console.log(data)
-  console.log(error)
-  if(error)
-  {
-    toast.error(`${error.data.message}: ${error.data.errorMessage}`)
+  const [login, { error }] = useLoginMutation();
+
+  if (error) {
+    toast.error(`${error.data.message}: ${error.data.errorMessage}`);
   }
   const onSubmit = async (data) => {
     const userInfo = {
-      id: data.email,
+      email: data.email,
       password: data.password,
     };
-    login(userInfo)
+    const res = await login(userInfo).unwrap();
+ 
+    const user = verifyToken(res.data.token.accessToken)
+
+    dispatch(setUser({user,token:res.data.token.accessToken}))
   };
   return (
     <div>
@@ -63,12 +69,11 @@ const Login = () => {
             <Typography variant="small" className="mt-6 flex justify-center">
               Don&apos;t have an account?
               <Typography
-            
                 variant="small"
                 color="light-blue"
                 className="ml-1 font-bold"
               >
-              <Link to="/signup">Sign up</Link>  
+                <Link to="/signup">Sign up</Link>
               </Typography>
             </Typography>
           </CardFooter>
