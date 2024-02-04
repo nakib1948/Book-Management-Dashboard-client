@@ -10,7 +10,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-     
+      {
+        path: "/",
+        element: <BookLayout />,
+      },
     ],
   },
   {
@@ -20,10 +23,6 @@ const router = createBrowserRouter([
   {
     path: "signup",
     element: <Signup />,
-  },
-  {
-    path: "allbooks",
-    element: <BookLayout />,
   },
 ]);
 

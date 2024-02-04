@@ -1,12 +1,12 @@
-import { Toaster } from "react-hot-toast";
-import Login from "./pages/login/login";
 import { Outlet } from "react-router-dom";
-import Dashboard from "./pages/dashboard/dashboard";
+import Navbarr from "./shared/Navbar";
+
 
 function App() {
   return (
     <div>
-      <Dashboard />
+      <Navbarr/>
+      <Outlet/>
     </div>
   );
 }

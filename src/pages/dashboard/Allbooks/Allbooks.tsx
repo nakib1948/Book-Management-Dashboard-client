@@ -15,7 +15,8 @@ import {
   MobileNav,
   IconButton,
   Input,
-  Select, Option
+  Select,
+  Option,
 } from "@material-tailwind/react";
 import { useGetAllProductQuery } from "../../../redux/features/product/productApi";
 
@@ -52,31 +53,17 @@ const Allbooks = () => {
 
   return (
     <div>
-           <div className="flex justify-center">
-            <input
-              type="text"
-              placeholder="search book or author"
-              className="input input-bordered input-primary w-full max-w-xs"
-             
-            />
-          
-          <button
-         
-            className="text-white border-0 py-2 ml-2 px-8 focus:outline-none bg-indigo-600 rounded text-lg"
-          >
-            search
-          </button>
-        </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 m-10 gap-6">
         {data &&
           data.data.map((product, index) => (
             <div key={index}>
-              <Card className="w-64 md:w-80 lg:w-80">
-                <CardHeader shadow={false} floated={false} className="h-44">
+              <Card className="w-64 md:w-96 lg:w-96">
+                <CardHeader shadow={false} floated={false} className="h-64">
                   <img
                     src={product.imageurl}
                     alt="card-image"
-                    className="h-44 w-full"
+                    className="h-64 w-full"
                   />
                 </CardHeader>
                 <CardBody>
@@ -97,7 +84,17 @@ const Allbooks = () => {
                 <CardFooter className="pt-0">
                   <div className="mb-2 flex items-center justify-between">
                     <Button onClick={() => handleOpen(product)}>Details</Button>
-                    <Button color="red">Delete</Button>
+                    <div className="form-control">
+                      <label className="label cursor-pointer">
+                       
+                        <input
+                          type="checkbox"
+                          checked="checked"
+                          className="checkbox checkbox-primary"
+                        />
+                         <span className="ml-1 font-bold text-lg text-red-400 label-text">Delete</span>
+                      </label>
+                    </div>
                   </div>
                   <Button
                     ripple={false}
