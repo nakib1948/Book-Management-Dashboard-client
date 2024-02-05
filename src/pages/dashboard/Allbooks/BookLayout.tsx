@@ -56,7 +56,6 @@ const BookLayout = () => {
   };
 
   const searchParam = async () => {
-    
     setsearchQueryParam(`searchTerm=${searchOption}`);
   };
 
@@ -70,9 +69,7 @@ const BookLayout = () => {
               className="select select-ghost w-full max-w-xs"
               defaultValue=""
             >
-              <option  value="">
-                Filter by language
-              </option>
+              <option value="">Filter by language</option>
               <option>English</option>
               <option>Bangla</option>
               <option>Hindi</option>
@@ -87,9 +84,7 @@ const BookLayout = () => {
               className="select select-ghost w-full max-w-xs"
               defaultValue=""
             >
-              <option value="">
-                Filter by genre
-              </option>
+              <option value="">Filter by genre</option>
               <option>Adventure</option>
               <option>Fiction</option>
               <option>Fantacy</option>
@@ -103,9 +98,7 @@ const BookLayout = () => {
               className="select select-ghost w-full max-w-xs"
               defaultValue=""
             >
-              <option value="">
-                Filter by series
-              </option>
+              <option value="">Filter by series</option>
               <option>Harry Potter</option>
               <option>The Lord of the Rings</option>
               <option>Game of Thrones</option>
@@ -119,9 +112,7 @@ const BookLayout = () => {
               className="select select-ghost w-full max-w-xs"
               defaultValue=""
             >
-              <option value="">
-                Filter by format
-              </option>
+              <option value="">Filter by format</option>
               <option>hardcover</option>
               <option>paperback</option>
               <option>e-book</option>
@@ -198,7 +189,7 @@ const BookLayout = () => {
           search
         </button>
       </div>
-      <Allbooks searchQueryParam={searchQueryParam} queryParam={queryparam} />
+      <Allbooks queryParam={searchQueryParam + "&" + queryparam} />
     </div>
   );
 };

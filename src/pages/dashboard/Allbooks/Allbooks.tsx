@@ -11,20 +11,15 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
-  Navbar,
-  MobileNav,
-  IconButton,
-  Input,
-  Select,
-  Option,
+ 
 } from "@material-tailwind/react";
 import { useGetAllProductQuery } from "../../../redux/features/product/productApi";
 
-const Allbooks = ({queryParam,searchQueryParam}) => {
+const Allbooks = ({queryParam}) => {
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const { data, error, isLoading } = useGetAllProductQuery();
+  const { data, error, isLoading } = useGetAllProductQuery(queryParam);
   const [openNav, setOpenNav] = useState(false);
 
   useEffect(() => {
@@ -33,7 +28,7 @@ const Allbooks = ({queryParam,searchQueryParam}) => {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
-  console.log(searchQueryParam + "&" +queryParam)
+
   const handleOpen = (product) => {
     setSelectedProduct(product);
     setOpen(true);
@@ -51,7 +46,7 @@ const Allbooks = ({queryParam,searchQueryParam}) => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-
+ console.log(queryParam)
   return (
     <div>
       
