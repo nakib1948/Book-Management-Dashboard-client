@@ -5,7 +5,14 @@ const productApi = baseApi.injectEndpoints({
     getAllProduct: builder.query({
       query: (queryParam) => `/product?${queryParam}`,
     }),
+    addbook: builder.mutation({
+      query: (productInfo) => ({
+        url: "/product/addbook",
+        method: "POST",
+        body: productInfo,
+      }),
+    }),
   }),
 });
 
-export const { useGetAllProductQuery } = productApi;
+export const { useGetAllProductQuery,useAddbookMutation } = productApi;

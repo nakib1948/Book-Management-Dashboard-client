@@ -28,7 +28,9 @@ const Navbarr = () => {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <Link className="flex items-center">Add Books</Link>
+        <Link to="/addbook" className="flex items-center">
+          Add Books
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -69,7 +71,7 @@ const Navbarr = () => {
           variant="h6"
           className="mr-4 cursor-pointer py-1.5"
         >
-          Book Management Dashboard
+          <Link to="/">Book Management Dashboard</Link>
         </Typography>
         <div className="hidden lg:block">{navList}</div>
         <IconButton

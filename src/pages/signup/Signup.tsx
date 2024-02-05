@@ -36,7 +36,6 @@ const Signup = () => {
       password: data.password,
     };
     const res = await signup(userInfo).unwrap();
-    console.log(res)
     await toast.success(`${res.message}`)
     navigate("/login")
   };
