@@ -11,15 +11,15 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
- 
 } from "@material-tailwind/react";
 import { useGetAllProductQuery } from "../../../redux/features/product/productApi";
+import Updatebook from "../updatebook/Updatebook";
 
-const Allbooks = ({queryParam}) => {
+const Allbooks = ({ queryParam }) => {
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const { data, error, isLoading } = useGetAllProductQuery(queryParam);
+  const { data, error, isLoading ,refetch} = useGetAllProductQuery(queryParam);
   const [openNav, setOpenNav] = useState(false);
 
   useEffect(() => {
@@ -46,10 +46,9 @@ const Allbooks = ({queryParam}) => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
- console.log(queryParam)
+  console.log(queryParam);
   return (
     <div>
-      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 m-10 gap-6">
         {data &&
           data.data.map((product, index) => (
@@ -80,15 +79,25 @@ const Allbooks = ({queryParam}) => {
                 <CardFooter className="pt-0">
                   <div className="mb-2 flex items-center justify-between">
                     <Button onClick={() => handleOpen(product)}>Details</Button>
+                    <Button
+                      onClick={() =>
+                        document
+                          .getElementById(`updateBookModal_${product._id}`)
+                          .showModal()
+                      }
+                    >
+                      update
+                    </Button>
                     <div className="form-control">
                       <label className="label cursor-pointer">
-                       
                         <input
                           type="checkbox"
                           checked="checked"
                           className="checkbox checkbox-primary"
                         />
-                         <span className="ml-1 font-bold text-lg text-red-400 label-text">Delete</span>
+                        <span className="ml-1 font-bold text-lg text-red-400 label-text">
+                          Delete
+                        </span>
                       </label>
                     </div>
                   </div>
@@ -140,6 +149,14 @@ const Allbooks = ({queryParam}) => {
                   </Button>
                 </DialogFooter>
               </Dialog>
+              <dialog id={`updateBookModal_${product._id}`} className="modal ">
+                <div className="modal-box bg-gray-900 modal-bottom sm:modal-middle">
+                  <Updatebook refetch={refetch} product={product} />
+                </div>
+                <form method="dialog" className="modal-backdrop">
+                  <button>close</button>
+                </form>
+              </dialog>
             </div>
           ))}
       </div>
