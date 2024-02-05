@@ -26,7 +26,6 @@ const Updatebook = ({product,refetch}) => {
           language: data.language,
           format: data.format,
         };
-        console.log(updateBook)
         
         const res = await updatebook({id:product._id,data:updateBook}).unwrap();
         toast.success(`${res.message}`);

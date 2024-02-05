@@ -11,7 +11,7 @@ const Sales = ({ product, refetch }) => {
   } = useForm();
   const [salebook, { error }] = useSellbookMutation();
   const onSubmit = async (data) => {
-    console.log(product._id);
+   
     const sell = {
       buyerName: data.buyerName,
       quantity: Number(data.quantity),

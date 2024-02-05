@@ -3,12 +3,16 @@ import {
   Collapse,
   Typography,
   IconButton,
+  Button,
 } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useAppDispatch } from "../redux/hook";
+import { logout } from "../redux/features/user/userSlice";
 const Navbarr = () => {
   const [openNav, setOpenNav] = useState(false);
+  const dispatch = useAppDispatch()
 
   const handleWindowResize = () =>
     window.innerWidth >= 960 && setOpenNav(false);
@@ -20,6 +24,9 @@ const Navbarr = () => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
+  const signout = ()=>{
+   dispatch(logout())
+  }
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
@@ -60,6 +67,7 @@ const Navbarr = () => {
           Signup
         </Link>
       </Typography>
+      <Button onClick={signout} className="bg-blue-gray-300">Logout</Button>
     </ul>
   );
   return (
