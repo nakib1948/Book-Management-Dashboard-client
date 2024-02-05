@@ -20,7 +20,7 @@ import {
 } from "@material-tailwind/react";
 import { useGetAllProductQuery } from "../../../redux/features/product/productApi";
 
-const Allbooks = () => {
+const Allbooks = ({queryParam,searchQueryParam}) => {
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -33,6 +33,7 @@ const Allbooks = () => {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
+  console.log(searchQueryParam + "&" +queryParam)
   const handleOpen = (product) => {
     setSelectedProduct(product);
     setOpen(true);
