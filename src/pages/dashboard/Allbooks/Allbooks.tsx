@@ -17,7 +17,8 @@ import {
   useGetAllProductQuery,
 } from "../../../redux/features/product/productApi";
 import Updatebook from "../updatebook/Updatebook";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
+import CreateVariant from "../CreateVariant/CreateVariant";
 
 const Allbooks = ({ queryParam }) => {
   const [open, setOpen] = useState(false);
@@ -68,6 +69,7 @@ const Allbooks = ({ queryParam }) => {
 
   return (
     <div>
+      
       {selectedItems.length > 0 ? (
         <Button onClick={handleDelete} className="ml-10" color="red">
           Delete Selected
@@ -92,6 +94,16 @@ const Allbooks = ({ queryParam }) => {
                     <Typography color="blue-gray" className="font-medium">
                       {product.name}
                     </Typography>
+                    <Button
+                      onClick={() =>
+                        document
+                          .getElementById(`newBookModal_${product._id}`)
+                          .showModal()
+                      }
+                      className="bg-blue-gray-300"
+                    >
+                      Create Variant
+                    </Button>
                   </div>
                   <div className="mb-2 flex items-center justify-between">
                     <Typography color="blue-gray" className="font-medium">
@@ -179,6 +191,15 @@ const Allbooks = ({ queryParam }) => {
               <dialog id={`updateBookModal_${product._id}`} className="modal ">
                 <div className="modal-box bg-gray-900 modal-bottom sm:modal-middle">
                   <Updatebook refetch={refetch} product={product} />
+                </div>
+                <form method="dialog" className="modal-backdrop">
+                  <button>close</button>
+                </form>
+              </dialog>
+              <dialog id={`newBookModal_${product._id}`} className="modal ">
+              <Toaster/>
+                <div className="modal-box bg-gray-900 modal-bottom sm:modal-middle">
+                  <CreateVariant refetch={refetch} product={product} />
                 </div>
                 <form method="dialog" className="modal-backdrop">
                   <button>close</button>
