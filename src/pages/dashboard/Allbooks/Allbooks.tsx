@@ -12,14 +12,19 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-import { useGetAllProductQuery } from "../../../redux/features/product/productApi";
+import {
+  useDeletebookMutation,
+  useGetAllProductQuery,
+} from "../../../redux/features/product/productApi";
 import Updatebook from "../updatebook/Updatebook";
+import toast from "react-hot-toast";
 
 const Allbooks = ({ queryParam }) => {
   const [open, setOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  const { data, error, isLoading ,refetch} = useGetAllProductQuery(queryParam);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const { data, error, isLoading, refetch } = useGetAllProductQuery(queryParam);
+  const [deletebook, { error: deleteerror }] = useDeletebookMutation();
   const [openNav, setOpenNav] = useState(false);
 
   useEffect(() => {
@@ -28,6 +33,15 @@ const Allbooks = ({ queryParam }) => {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
+  const handleCheckboxChange = (id) => {
+    setSelectedItems((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((id) => id !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
+  };
 
   const handleOpen = (product) => {
     setSelectedProduct(product);
@@ -38,6 +52,11 @@ const Allbooks = ({ queryParam }) => {
     setSelectedProduct(null);
     setOpen(false);
   };
+  const handleDelete = async () => {
+    const res = await deletebook(selectedItems).unwrap();
+    toast.success(`${res.message}`);
+    refetch();
+  };
 
   if (isLoading) {
     return <Spinner className="h-16 w-16 text-gray-900/50" />;
@@ -46,9 +65,16 @@ const Allbooks = ({ queryParam }) => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-  console.log(queryParam);
+
   return (
     <div>
+      {selectedItems.length > 0 ? (
+        <Button onClick={handleDelete} className="ml-10" color="red">
+          Delete Selected
+        </Button>
+      ) : (
+        <></>
+      )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 m-10 gap-6">
         {data &&
           data.data.map((product, index) => (
@@ -92,7 +118,8 @@ const Allbooks = ({ queryParam }) => {
                       <label className="label cursor-pointer">
                         <input
                           type="checkbox"
-                          checked="checked"
+                          checked={selectedItems.includes(product._id)}
+                          onChange={() => handleCheckboxChange(product._id)}
                           className="checkbox checkbox-primary"
                         />
                         <span className="ml-1 font-bold text-lg text-red-400 label-text">
