@@ -38,7 +38,7 @@ const Navbarr = () => {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <Link className="flex items-center">Sales History</Link>
+        <Link to="/saleshistory" className="flex items-center">Sales History</Link>
       </Typography>
       <Typography
         as="li"

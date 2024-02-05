@@ -5,11 +5,17 @@ import Signup from "../pages/signup/Signup";
 import Allbooks from "../pages/dashboard/Allbooks/Allbooks";
 import BookLayout from "../pages/dashboard/Allbooks/BookLayout";
 import Addbook from "../pages/dashboard/Addbook/Addbook";
+import SalesHistory from "../pages/dashboard/sales/SalesHistory";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "/",
@@ -18,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/addbook",
         element: <Addbook />,
+      },
+      {
+        path: "/saleshistory",
+        element: <SalesHistory />,
       },
     ],
   },

@@ -19,6 +19,7 @@ import {
 import Updatebook from "../updatebook/Updatebook";
 import toast, { Toaster } from "react-hot-toast";
 import CreateVariant from "../CreateVariant/CreateVariant";
+import Sales from "../sales/Sales";
 
 const Allbooks = ({ queryParam }) => {
   const [open, setOpen] = useState(false);
@@ -60,7 +61,7 @@ const Allbooks = ({ queryParam }) => {
   };
 
   if (isLoading) {
-    return <Spinner className="h-16 w-16 text-gray-900/50" />;
+    return <Spinner className="h-16 flex justify-center w-16 text-gray-900/50" />;
   }
 
   if (error) {
@@ -69,7 +70,6 @@ const Allbooks = ({ queryParam }) => {
 
   return (
     <div>
-      
       {selectedItems.length > 0 ? (
         <Button onClick={handleDelete} className="ml-10" color="red">
           Delete Selected
@@ -144,6 +144,11 @@ const Allbooks = ({ queryParam }) => {
                     ripple={false}
                     fullWidth={true}
                     className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
+                    onClick={() =>
+                      document
+                        .getElementById(`sellBookModal_${product._id}`)
+                        .showModal()
+                    }
                   >
                     Sell
                   </Button>
@@ -196,10 +201,21 @@ const Allbooks = ({ queryParam }) => {
                   <button>close</button>
                 </form>
               </dialog>
+
               <dialog id={`newBookModal_${product._id}`} className="modal ">
-              <Toaster/>
+                <Toaster />
                 <div className="modal-box bg-gray-900 modal-bottom sm:modal-middle">
                   <CreateVariant refetch={refetch} product={product} />
+                </div>
+                <form method="dialog" className="modal-backdrop">
+                  <button>close</button>
+                </form>
+              </dialog>
+
+              <dialog id={`sellBookModal_${product._id}`} className="modal ">
+                <Toaster />
+                <div className="modal-box bg-gray-900 modal-bottom sm:modal-middle">
+                  <Sales refetch={refetch} product={product} />
                 </div>
                 <form method="dialog" className="modal-backdrop">
                   <button>close</button>
