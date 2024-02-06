@@ -5,31 +5,34 @@ import {
   CardFooter,
   Typography,
   Input,
-  Checkbox,
   Button,
 } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import { useLoginMutation } from "../../redux/features/user/userApi";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hook";
 import { verifyToken } from "../../utils/verifyToken";
 import { setUser } from "../../redux/features/user/userSlice";
 
+interface FormData {
+  email: string;
+  password: string;
+}
+
 const Login = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate()
   const {
     register,
-    formState: { errors },
     handleSubmit,
-    reset,
-  } = useForm();
+  } = useForm<FormData>()
   const [login, { error }] = useLoginMutation();
 
   if (error) {
     toast.error(`${error.data.message}: ${error.data.errorMessage}`);
   }
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: FormData) => {
     const userInfo = {
       email: data.email,
       password: data.password,
@@ -38,7 +41,9 @@ const Login = () => {
  
     const user = verifyToken(res.data.token.accessToken)
 
-    dispatch(setUser({user,token:res.data.token.accessToken}))
+    await dispatch(setUser({user,token:res.data.token.accessToken}))
+    await toast.success("login succesful")
+    navigate("/")
   };
   return (
     <div>

@@ -133,6 +133,7 @@ const BookLayout = () => {
               variant="standard"
               label="Filter by author"
               placeholder="Standard"
+              crossOrigin="anonymous"
             />
           </div>
           <div className="w-44">
@@ -141,6 +142,7 @@ const BookLayout = () => {
               variant="standard"
               label="Filter by publisher"
               placeholder="Standard"
+              crossOrigin="anonymous"
             />
           </div>
           <div className="w-44">
@@ -149,6 +151,7 @@ const BookLayout = () => {
               variant="standard"
               label="Filter by ISBN"
               placeholder="Standard"
+              crossOrigin="anonymous"
             />
           </div>
           <div className="w-44">
@@ -158,6 +161,7 @@ const BookLayout = () => {
               variant="standard"
               label="Filter by min price"
               placeholder="Standard"
+              crossOrigin="anonymous"
             />
           </div>
           <div className="w-44">
@@ -167,10 +171,11 @@ const BookLayout = () => {
               variant="standard"
               label="Filter by max price"
               placeholder="Standard"
+              crossOrigin="anonymous"
             />
           </div>
         </div>
-        <Button type="submit" className="my-5" fullWidth>
+        <Button type="submit" className="my-5" fullWidth  placeholder={"filter"}>
           Filter
         </Button>
       </form>

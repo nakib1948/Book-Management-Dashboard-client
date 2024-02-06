@@ -1,8 +1,23 @@
-import { Card, Button, Select, Option, Input } from "@material-tailwind/react";
+/* eslint-disable */
+import { Input } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import { useAddbookMutation } from "../../../redux/features/product/productApi";
 import toast from "react-hot-toast";
 const img_hosting_token = import.meta.env.VITE_Image_Upload_Token;
+interface FormData {
+    name: string;
+    price: number;
+    quantity: number;
+    imageurl: string;
+    releaseDate: string;
+    author: string;
+    isbn: string;
+    genre: string;
+    publisher: string;
+    series: string;
+    language: string;
+    format: string;
+  }
 const Addbook = () => {
   const {
     register,
@@ -12,7 +27,7 @@ const Addbook = () => {
   } = useForm();
   const [addbook, { error }] = useAddbookMutation();
   const img_hosting_url = `https://api.imgbb.com/1/upload?key=${img_hosting_token}`;
-  const onSubmit = async (data) => {
+  const onSubmit = async (data:FormData) => {
     const formData = new FormData();
     formData.append("image", data.imageurl[0]);
 
