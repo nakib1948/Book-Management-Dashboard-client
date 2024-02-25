@@ -23,6 +23,15 @@ import CreateVariant from "../CreateVariant/CreateVariant";
 import Sales from "../sales/Sales";
 import { useAppSelector } from "../../../redux/hook";
 import { useCurrentUser } from "../../../redux/features/user/userSlice";
+import { useAddProductToCartMutation } from "../../../redux/features/cart/cartApi";
+
+type TCart = {
+  productId: string;
+  productName: string;
+  price: number;
+  quantity: number;
+  userEmail: string;
+};
 
 const Allbooks = ({ queryParam }) => {
   const [open, setOpen] = useState(false);
@@ -30,6 +39,7 @@ const Allbooks = ({ queryParam }) => {
   const [selectedItems, setSelectedItems] = useState([]);
   const { data, error, isLoading, refetch } = useGetAllProductQuery(queryParam);
   const [deletebook, { error: deleteerror }] = useDeletebookMutation();
+  const [cartdata, { error: carterror }] = useAddProductToCartMutation();
   const [openNav, setOpenNav] = useState(false);
   const user = useAppSelector(useCurrentUser);
 
@@ -63,6 +73,17 @@ const Allbooks = ({ queryParam }) => {
     toast.success(`${res.message}`);
     refetch();
   };
+  const addToCart = async (data: TCart) => {
+    const cartData = {
+      productId: data._id,
+      productName: data.name,
+      price: data.price,
+      quantity: 0,
+      userEmail: user?.userEmail,
+    };
+    const res = await cartdata(cartData).unwrap();
+    toast.success(`${res.message}`);
+  };
 
   if (isLoading) {
     return (
@@ -73,7 +94,9 @@ const Allbooks = ({ queryParam }) => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-
+  if (carterror) {
+    toast.error(`${carterror.data.message}`);
+  }
   return (
     <div>
       {selectedItems.length > 0 ? (
@@ -107,7 +130,10 @@ const Allbooks = ({ queryParam }) => {
                           .showModal()
                       }
                       className="bg-blue-gray-300"
-                      disabled={user?.userEmail !== product.userEmail && user?.userRole!=='manager'}
+                      disabled={
+                        user?.userEmail !== product.userEmail &&
+                        user?.userRole !== "manager"
+                      }
                     >
                       Create Variant
                     </Button>
@@ -164,12 +190,12 @@ const Allbooks = ({ queryParam }) => {
                     </div>
                   </div>
                   <div className="mb-2 flex items-center justify-around">
-                 
-                  <Button
-                   className="w-full mx-2"
-                  >
-                    Add to Cart
-                  </Button>
+                    <Button
+                      className="w-full mx-2"
+                      onClick={() => addToCart(product)}
+                    >
+                      Add to Cart
+                    </Button>
                   </div>
                 </CardFooter>
               </Card>

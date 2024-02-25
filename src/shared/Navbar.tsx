@@ -45,6 +45,16 @@ const Navbarr = () => {
         color="blue-gray"
         className="p-1 font-normal"
       >
+        <Link to="/cart" className="flex items-center">
+          Cart
+        </Link>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
+        color="blue-gray"
+        className="p-1 font-normal"
+      >
         <Link to="/saleshistory" className="flex items-center">Sales History</Link>
       </Typography>
       <Typography

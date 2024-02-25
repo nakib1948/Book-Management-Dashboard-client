@@ -66,7 +66,7 @@ const Addbook = () => {
   if (error) {
     toast.error(`${error.data.message}: ${error.data.errorMessage}`);
   }
-  console.log(user?.userRole)
+ 
   return (
     <div>
       <div className="bg-white rounded-lg p-8 flex  flex-col  w-full mt-10 mx-auto shadow-md">
