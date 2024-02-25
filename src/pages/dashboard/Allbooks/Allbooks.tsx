@@ -21,6 +21,8 @@ import Updatebook from "../updatebook/Updatebook";
 import toast, { Toaster } from "react-hot-toast";
 import CreateVariant from "../CreateVariant/CreateVariant";
 import Sales from "../sales/Sales";
+import { useAppSelector } from "../../../redux/hook";
+import { useCurrentUser } from "../../../redux/features/user/userSlice";
 
 const Allbooks = ({ queryParam }) => {
   const [open, setOpen] = useState(false);
@@ -29,6 +31,7 @@ const Allbooks = ({ queryParam }) => {
   const { data, error, isLoading, refetch } = useGetAllProductQuery(queryParam);
   const [deletebook, { error: deleteerror }] = useDeletebookMutation();
   const [openNav, setOpenNav] = useState(false);
+  const user = useAppSelector(useCurrentUser);
 
   useEffect(() => {
     window.addEventListener(
@@ -62,7 +65,9 @@ const Allbooks = ({ queryParam }) => {
   };
 
   if (isLoading) {
-    return <Spinner className="h-16 flex justify-center w-16 text-gray-900/50" />;
+    return (
+      <Spinner className="h-16 flex justify-center w-16 text-gray-900/50" />
+    );
   }
 
   if (error) {
@@ -102,6 +107,7 @@ const Allbooks = ({ queryParam }) => {
                           .showModal()
                       }
                       className="bg-blue-gray-300"
+                      disabled={user?.userEmail !== product.userEmail && user?.userRole!=='manager'}
                     >
                       Create Variant
                     </Button>
@@ -117,12 +123,24 @@ const Allbooks = ({ queryParam }) => {
                 </CardBody>
                 <CardFooter className="pt-0">
                   <div className="mb-2 flex items-center justify-between">
-                    <Button onClick={() => handleOpen(product)}>Details</Button>
+                    <Button
+                      disabled={
+                        user?.userEmail !== product.userEmail &&
+                        user?.userRole !== "manager"
+                      }
+                      onClick={() => handleOpen(product)}
+                    >
+                      Details
+                    </Button>
                     <Button
                       onClick={() =>
                         document
                           .getElementById(`updateBookModal_${product._id}`)
                           .showModal()
+                      }
+                      disabled={
+                        user?.userEmail !== product.userEmail &&
+                        user?.userRole !== "manager"
                       }
                     >
                       update
@@ -130,6 +148,10 @@ const Allbooks = ({ queryParam }) => {
                     <div className="form-control">
                       <label className="label cursor-pointer">
                         <input
+                          disabled={
+                            user?.userEmail !== product.userEmail &&
+                            user?.userRole !== "manager"
+                          }
                           type="checkbox"
                           checked={selectedItems.includes(product._id)}
                           onChange={() => handleCheckboxChange(product._id)}
@@ -141,18 +163,14 @@ const Allbooks = ({ queryParam }) => {
                       </label>
                     </div>
                   </div>
+                  <div className="mb-2 flex items-center justify-around">
+                 
                   <Button
-                    ripple={false}
-                    fullWidth={true}
-                    className="bg-blue-gray-900/10 text-blue-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
-                    onClick={() =>
-                      document
-                        .getElementById(`sellBookModal_${product._id}`)
-                        .showModal()
-                    }
+                   className="w-full mx-2"
                   >
-                    Sell
+                    Add to Cart
                   </Button>
+                  </div>
                 </CardFooter>
               </Card>
 
@@ -207,16 +225,6 @@ const Allbooks = ({ queryParam }) => {
                 <Toaster />
                 <div className="modal-box bg-gray-900 modal-bottom sm:modal-middle">
                   <CreateVariant refetch={refetch} product={product} />
-                </div>
-                <form method="dialog" className="modal-backdrop">
-                  <button>close</button>
-                </form>
-              </dialog>
-
-              <dialog id={`sellBookModal_${product._id}`} className="modal ">
-                <Toaster />
-                <div className="modal-box bg-gray-900 modal-bottom sm:modal-middle">
-                  <Sales refetch={refetch} product={product} />
                 </div>
                 <form method="dialog" className="modal-backdrop">
                   <button>close</button>

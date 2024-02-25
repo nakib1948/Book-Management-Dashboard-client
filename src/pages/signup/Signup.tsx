@@ -5,19 +5,22 @@ import {
   CardFooter,
   Typography,
   Input,
-  Checkbox,
+  Option,
   Button,
+  Select,
 } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useSignupMutation } from "../../redux/features/user/userApi";
+import { useState } from "react";
 type TUser = {
   name: string;
   email: string;
   password: string;
 };
 const Signup = () => {
+  const [role, setRole] = useState("user");
   const {
     register,
     formState: { errors },
@@ -27,13 +30,14 @@ const Signup = () => {
   const [signup, { error }] = useSignupMutation();
   const navigate = useNavigate();
   if (error) {
-    toast.error(`${error.message}: ${error.errorMessage}`);
+    toast.error(`${error.data.message}: ${error.data.errorMessage}`);
   }
   const onSubmit = async (data: TUser) => {
     const userInfo = {
       name: data.name,
       email: data.email,
       password: data.password,
+      role
     };
     const res = await signup(userInfo).unwrap();
     await toast.success(`${res.message}`)
@@ -56,6 +60,14 @@ const Signup = () => {
             <Input {...register("name")} label="Name" size="lg" />
             <Input {...register("email")} label="Email" size="lg" />
             <Input {...register("password")} label="Password" size="lg" />
+            <Select
+            value={role}
+            onChange={(val) => setRole(val)}
+              label="Select Role"
+            >
+              <Option value="user">user</Option>
+              <Option value="manager">manager</Option>
+            </Select>
           </CardBody>
           <CardFooter className="pt-0">
             <Button

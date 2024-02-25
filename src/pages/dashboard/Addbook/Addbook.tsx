@@ -3,6 +3,8 @@ import { Input } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import { useAddbookMutation } from "../../../redux/features/product/productApi";
 import toast from "react-hot-toast";
+import { useAppSelector } from "../../../redux/hook";
+import { useCurrentUser } from "../../../redux/features/user/userSlice";
 const img_hosting_token = import.meta.env.VITE_Image_Upload_Token;
 interface FormData {
     name: string;
@@ -26,8 +28,10 @@ const Addbook = () => {
     reset,
   } = useForm();
   const [addbook, { error }] = useAddbookMutation();
+  const user = useAppSelector(useCurrentUser)
   const img_hosting_url = `https://api.imgbb.com/1/upload?key=${img_hosting_token}`;
   const onSubmit = async (data:FormData) => {
+   
     const formData = new FormData();
     formData.append("image", data.imageurl[0]);
 
@@ -52,6 +56,7 @@ const Addbook = () => {
           series: data.series,
           language: data.language,
           format: data.format,
+          userEmail: user?.userEmail
         };
         const res = await addbook(uploadBook).unwrap();
         toast.success(`${res.message}`);
@@ -61,6 +66,7 @@ const Addbook = () => {
   if (error) {
     toast.error(`${error.data.message}: ${error.data.errorMessage}`);
   }
+  console.log(user?.userRole)
   return (
     <div>
       <div className="bg-white rounded-lg p-8 flex  flex-col  w-full mt-10 mx-auto shadow-md">
