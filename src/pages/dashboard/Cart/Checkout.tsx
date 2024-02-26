@@ -9,8 +9,10 @@ import {
   DialogFooter,
   Input,
   Textarea,
+  CardFooter,
 } from "@material-tailwind/react";
 import {
+  useDeletefromCartMutation,
   useGetcartInformationQuery,
   useQuantityUpdateMutation,
 } from "../../../redux/features/cart/cartApi";
@@ -35,14 +37,10 @@ const Checkout = () => {
   const { data, error, isLoading, refetch } = useGetcartInformationQuery(
     user?.userEmail
   );
+  const [deleteFromCart, { error: deleteerror }] = useDeletefromCartMutation();
   const [quantityupdate, { error: quantityUpdateError }] =
     useQuantityUpdateMutation();
-  if (isLoading) {
-    <Spinner className="h-16 w-16 text-gray-900/50" />;
-  }
-  if (quantityUpdateError) {
-    toast.error(`${quantityUpdateError.data.message}`);
-  }
+
   const quantityUpdate = async (productId, type) => {
     const quantityUpdateData = {
       productId,
@@ -57,7 +55,30 @@ const Checkout = () => {
     await setSelectedProduct(data);
     await setOpen(!open);
   };
+  const removefromCart = async (data) => {
+    const removeProduct = {
+      productId: data.productId,
+      userEmail: user?.userEmail,
+      quantity: data.quantity,
+    };
+    const res = await deleteFromCart(removeProduct).unwrap();
+    toast.success(`${res.message}`);
+    refetch();
+  };
+  if (deleteerror) {
+    toast.error(`${deleteerror.data.message}`);
+  }
+  if (isLoading) {
+    <Spinner className="h-16 w-16 text-gray-900/50" />;
+  }
+  if (quantityUpdateError) {
+    toast.error(`${quantityUpdateError.data.message}`);
+  }
 
+  const totalPrice = data?.data.reduce((acc, val) => {
+    return (acc += val.quantity * val.price);
+  }, 0);
+  console.log(totalPrice);
   return (
     <div className="m-10">
       <Card className="h-full w-full overflow-scroll">
@@ -143,7 +164,12 @@ const Checkout = () => {
                       <Button onClick={() => handleOpen(product)}>Sell</Button>
                     </td>
                     <td className={classes}>
-                      <Button color="red">Remove</Button>
+                      <Button
+                        onClick={() => removefromCart(product)}
+                        color="red"
+                      >
+                        Remove
+                      </Button>
                     </td>
                   </tr>
                 </>
@@ -163,6 +189,13 @@ const Checkout = () => {
             </DialogFooter>
           </Dialog>
         )}
+        <CardFooter>
+          {data?.data.length && (
+            <Typography className="text-center font-semibold text-xl">
+              total : {totalPrice}$
+            </Typography>
+          )}
+        </CardFooter>
       </Card>
     </div>
   );

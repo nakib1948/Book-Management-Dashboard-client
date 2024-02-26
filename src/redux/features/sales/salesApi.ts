@@ -8,9 +8,11 @@ const salesApi = baseApi.injectEndpoints({
         method: "POST",
         body: sellInfo,
       }),
+      invalidatesTags:['sales']
     }),
     getSellHistory: builder.query({
-      query: () => `/sales`,
+      query: (email) => `/sales/${email}`,
+      providesTags:['sales']
     }),
   }),
 });

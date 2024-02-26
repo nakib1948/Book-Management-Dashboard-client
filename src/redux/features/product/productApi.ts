@@ -4,6 +4,7 @@ const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllProduct: builder.query({
       query: (queryParam) => `/product?${queryParam}`,
+      providesTags:['allbooks']
     }),
     addbook: builder.mutation({
       query: (productInfo) => ({

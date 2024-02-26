@@ -8,6 +8,8 @@ import {
   isSameMonth,
   isSameYear,
 } from "date-fns";
+import { useAppSelector } from "../../../redux/hook";
+import { useCurrentUser } from "../../../redux/features/user/userSlice";
 
 const TABLE_HEAD = [
   "Product Id",
@@ -15,10 +17,12 @@ const TABLE_HEAD = [
   "Quantity",
   "BuyerName",
   "Date",
+  "contactNumber",
 ];
 const SalesHistory = () => {
   const [selectedHistory, setSelectedHistory] = useState("all");
-  const { data, error, isLoading, refetch } = useGetSellHistoryQuery();
+  const user = useAppSelector(useCurrentUser)
+  const { data, error, isLoading, refetch } = useGetSellHistoryQuery(user?.userEmail);
   if (isLoading) {
     return <Spinner className="h-16 mx-auto w-16 text-gray-900/50" />;
   }
@@ -137,6 +141,17 @@ const SalesHistory = () => {
                     className="font-medium"
                   >
                     {history.date}
+                  </Typography>
+                </td>
+                <td className="p-4">
+                  <Typography
+                    as="a"
+                    href="#"
+                    variant="small"
+                    color="blue-gray"
+                    className="font-medium"
+                  >
+                    {history.contactNumber}
                   </Typography>
                 </td>
               </tr>

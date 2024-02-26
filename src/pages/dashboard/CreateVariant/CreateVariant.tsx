@@ -2,6 +2,8 @@ import { Card, Button, Select, Option, Input } from "@material-tailwind/react";
 import { useForm } from "react-hook-form";
 import { useAddbookMutation } from "../../../redux/features/product/productApi";
 import toast, { Toaster } from "react-hot-toast";
+import { useAppSelector } from "../../../redux/hook";
+import { useCurrentUser } from "../../../redux/features/user/userSlice";
 const CreateVariant = ({product,refetch}) => {
   const {
     register,
@@ -10,6 +12,7 @@ const CreateVariant = ({product,refetch}) => {
     reset,
   } = useForm();
   const [addbook, { error }] = useAddbookMutation();
+  const user = useAppSelector(useCurrentUser)
   const onSubmit = async (data) => {
    
         const newBook = {
@@ -25,6 +28,7 @@ const CreateVariant = ({product,refetch}) => {
           series: data.series,
           language: data.language,
           format: data.format,
+          userEmail: user?.userEmail
         };
       
         const res = await addbook(newBook).unwrap();

@@ -20,11 +20,10 @@ import {
 import Updatebook from "../updatebook/Updatebook";
 import toast, { Toaster } from "react-hot-toast";
 import CreateVariant from "../CreateVariant/CreateVariant";
-import Sales from "../sales/Sales";
 import { useAppSelector } from "../../../redux/hook";
 import { useCurrentUser } from "../../../redux/features/user/userSlice";
 import { useAddProductToCartMutation } from "../../../redux/features/cart/cartApi";
-
+import Swal from "sweetalert2";
 type TCart = {
   productId: string;
   productName: string;
@@ -81,8 +80,10 @@ const Allbooks = ({ queryParam }) => {
       quantity: 0,
       userEmail: user?.userEmail,
     };
-    const res = await cartdata(cartData).unwrap();
-    toast.success(`${res.message}`);
+    const res = await cartdata(cartData)
+      .unwrap()
+      .catch((error) => toast.error(`${error.data.message}`));
+    if (res.success) toast.success(`${res.message}`);
   };
 
   if (isLoading) {
@@ -94,9 +95,7 @@ const Allbooks = ({ queryParam }) => {
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-  if (carterror) {
-    toast.error(`${carterror.data.message}`);
-  }
+
   return (
     <div>
       {selectedItems.length > 0 ? (
@@ -108,7 +107,7 @@ const Allbooks = ({ queryParam }) => {
       )}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 m-10 gap-6">
         {data &&
-          data.data.map((product, index) => (
+          data.data.filter(product=> product.quantity>0).map((product, index) => (
             <div key={index}>
               <Card className="w-64 md:w-96 lg:w-96">
                 <CardHeader shadow={false} floated={false} className="h-64">
