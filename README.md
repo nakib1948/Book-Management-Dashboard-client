@@ -1,4 +1,4 @@
-# Project Name
+# Book-Management-Dashboard
 
 This project is a sample implementation of a Book Management service application using Typescript, React, Redux, Node.js, Express, and MongoDB.
 
