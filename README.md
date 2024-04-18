@@ -52,7 +52,7 @@ To get a local copy up and running follow these simple steps.
 
 1. Clone the repo.
    ```sh
-   git clone https://github.com/Porgramming-Hero-web-course/l2b2-full-stack-a5-client-side-nakib1948
+   git clone https://github.com/nakib1948/Book-Management-Dashboard-client.git
 2. Install NPM packages
    ```sh
    npm install
